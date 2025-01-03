@@ -1,6 +1,13 @@
 import { execute, run, fetchAll, fetchFirst } from "./dbUtils.js";
+import sqlite3 from "sqlite3";
 
-export const modifyTable = async (db, sql, params = []) => {
+const connectDb = () => {
+  const db = new sqlite3.Database("./db/sqlliteData.db");
+  return db;
+}
+
+export const modifyTable = async (sql, params = []) => {
+  const db = connectDb();
   try {
     let response;
     if (params && params.length > 0) {
@@ -13,11 +20,14 @@ export const modifyTable = async (db, sql, params = []) => {
   } catch (err) {
     console.log(err);
     return false;
+  } finally {
+    db.close();
   }
 };
 
 
-export const getAllRows = async (db, sql, params) => {
+export const getAllRows = async (sql, params) => {
+  const db = connectDb();
   try {
     const result = await fetchAll(db, sql, params);
     if (result && result.length > 0) {
@@ -28,10 +38,13 @@ export const getAllRows = async (db, sql, params) => {
   } catch (err) {
     console.log(err);
     return null;
+  } finally {
+    db.close();
   }
 }
 
-export const getRow = async (db, sql, params) => {
+export const getRow = async (sql, params) => {
+  const db = connectDb();
   try {
     const result = await fetchFirst(db, sql, params);
     if (typeof result === "object") {
@@ -42,5 +55,7 @@ export const getRow = async (db, sql, params) => {
   } catch (err) {
     console.log(`error in getRow ` + err);
     return null;
+  } finally {
+    db.close();
   }
 }
