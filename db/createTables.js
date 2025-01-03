@@ -1,22 +1,4 @@
-const execute = async (db, sql) => {
-  return new Promise((resolve, reject) => {
-    db.exec(sql, (err) => {
-      if (err)
-        reject(err);
-      resolve(true);
-    });
-  });
-};
-
-const run = async (db, sql, params = []) => {
-  return new Promise((resolve, reject) => {
-    db.run(sql, params, (err) => {
-      if (err)
-        reject(err);
-      resolve(true);
-    });
-  });
-}
+import { execute } from "./dbUtils.js";
 
 export const createTable = async (db) => {
   const createTableStm =
@@ -38,19 +20,6 @@ export const createTable = async (db) => {
   }
 };
 
-export const insertValues = async (db, sql, params = []) => {
-  try {
-    let response;
-    if (params && params.length > 0) {
-      response  = await run(db, sql, params)
-    } else {
-      response  = await execute(db, sql);
-    }
-    if (response)
-      return response;
-  } catch (err) {
-    return false;
-  }
-};
+
 
 
