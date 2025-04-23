@@ -8,6 +8,8 @@ const connectDb = () => {
 
 export const modifyTable = async (sql, params = []) => {
   const db = connectDb();
+  console.log(`sql: ${sql}`);
+  console.log(`params: ${params}`);
   try {
     let response;
     if (params && params.length > 0) {
