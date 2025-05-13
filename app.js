@@ -22,13 +22,14 @@ app.post('/create', (req, res) => {
   if (calendarMark) {
     const insetrSql = `INSERT INTO calendar (date, activity) VALUES(?, ?)`;
     const params = [calendarMark.date, calendarMark.activity];
-    modifyTable(insetrSql, params)
-    .then( dbResponse => {
+    const dbResponse = modifyTable(insetrSql, params)
+    if (dbResponse) {
       res.sendStatus(200);
-    }).catch( err => {
+    }
+    else {
       console.log(err);
       res.sendStatus(400);
-    })
+    }
   } else {
     res.status(400).json({message : `Valid calendarMark required!`});
   }
@@ -40,13 +41,14 @@ app.delete('/delete/:id', (req, res) => {
   if (id && id > 0) {
     const deleteSql = `DELETE calendar where id = ?`;
     const params = [calendarMark.id];
-    modifyTable(deleteSql, [id])
-    .then( dbResponse => {
-      if (dbResponse)
-        res.sendStatus(200);
-    }).catch( err => {
+    const dbResponse = modifyTable(insetrSql, params)
+    if (dbResponse) {
+      res.sendStatus(200);
+    }
+    else {
+      console.log(err);
       res.sendStatus(400);
-    })
+    }
   } else {
     res.status(400).json({errorMessage : `Valid ID required!`})
   }
@@ -54,14 +56,14 @@ app.delete('/delete/:id', (req, res) => {
 
 app.get('/all', (req, res) => {
   const selectAll = 'select * from calendar';
-  getAllRows(selectAll, [])
-  .then( result => {
+  const result = getAllRows(selectAll, [])
+  if (result) {
     console.log(result);
     res.json(result);
-  }).catch( err => {
+  } else{
     console.log(err);
     res.status(500).json(err);
-  });
+  }
 });
 
 app.listen(port, () => {
