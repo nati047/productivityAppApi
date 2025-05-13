@@ -18,10 +18,10 @@
   },
   "homepage": "https://github.com/nati047/productivityAppApi#readme",
   "dependencies": {
+    "better-sqlite3": "^11.10.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
-    "express": "^4.21.2",
-    "sqlite3": "^5.1.7"
+    "express": "^4.21.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

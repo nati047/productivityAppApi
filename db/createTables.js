@@ -1,18 +1,19 @@
-import { execute } from "./dbUtils.js";
-import sqlite3 from "sqlite3";
+import Database from "better-sqlite3";
 
-const db = new sqlite3.Database("./db/sqlliteData.db");
+const db = new Database("./db/sqlliteData.db");
 
-export const createTable = async () => {
-  const createTableStm =
-  `CREATE TABLE IF NOT EXISTS calendar (
-  id INTEGER PRIMARY KEY,
-  date DATE NOT NULL,
-  activity TEXT NOT NULL)`;
+export const createTable = () => {
+  const createTableStm = `
+  CREATE TABLE IF NOT EXISTS calendar (
+    id INTEGER PRIMARY KEY,
+    date DATE NOT NULL,
+    activity TEXT NOT NULL
+  )`;
+
   try {
-    const response = await execute( db, createTableStm);
-    if (response)
-      return response;
+    const stmt = db.prepare(createTableStm);
+    stmt.run();
+    return true;
   } catch (error) {
     console.log(error);
     return false;

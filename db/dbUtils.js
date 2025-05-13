@@ -1,39 +1,36 @@
-export const execute = async (db, sql) => {
-  return new Promise((resolve, reject) => {
-    db.exec(sql, (err) => {
-      if (err)
-        reject(err);
-      resolve(true);
-    });
-  });
+export const execute = (db, sql) => {
+  try {
+    db.exec(sql);
+    return true;
+  } catch (err) {
+    throw err;
+  }
 };
 
-export const run = async (db, sql, params = []) => {
-  return new Promise((resolve, reject) => {
-    db.run(sql, params, (err) => {
-      if (err)
-        reject(err);
-      resolve(true);
-    });
-  });
-}
-
-export const fetchAll = async (db, sql, params) => {
-  return new Promise((resolve, reject) => {
-    db.all(sql, params, (err, rows) => {
-      if (err)
-        reject(err);
-      resolve(rows);
-    });
-  });
+export const run = (db, sql, params = []) => {
+  try {
+    const stmt = db.prepare(sql);
+    stmt.run(params);
+    return true;
+  } catch (err) {
+    throw err;
+  }
 };
 
-export const fetchFirst = async (db, sql, params) => {
-  return new Promise((resolve, reject) => {
-    db.get(sql, params, (err, row) => {
-      if (err)
-        reject(err);
-      resolve(row);
-    });
-  });
+export const fetchAll = (db, sql, params = []) => {
+  try {
+    const stmt = db.prepare(sql);
+    return stmt.all(params);
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const fetchFirst = (db, sql, params = []) => {
+  try {
+    const stmt = db.prepare(sql);
+    return stmt.get(params);
+  } catch (err) {
+    throw err;
+  }
 };
